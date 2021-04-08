@@ -10,7 +10,7 @@ keywords    = ["ffi"]
 license     = "MIT"
 
 [features]
-default = ["download", "mkl-static-ilp64-seq"]
+default = ["download", "mkl-dynamic-ilp64-seq"]
 
 # MKL config
 # https://software.intel.com/content/www/us/en/develop/articles/intel-math-kernel-library-intel-mkl-and-pkg-config-tool.html

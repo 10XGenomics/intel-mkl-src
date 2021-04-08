@@ -52,6 +52,11 @@ fn main() -> Result<()> {
         return Ok(());
     }
 
+    // For dynamic linking we don't need the libraries to build
+    if cfg.link == LinkType::Shared {
+        return Ok(())
+    }
+
     // download if not found
     #[cfg(feature = "download")]
     {
