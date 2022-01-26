@@ -22,9 +22,13 @@
 
 #![cfg_attr(feature = "download", allow(unreachable_code))]
 
-use anyhow::*;
-use intel_mkl_tool::*;
-use std::{env, path::*};
+use anyhow::{Result, bail};
+use intel_mkl_tool::{Config, Entry, LinkType};
+#[cfg(feature = "download")]
+use intel_mkl_tool::xdg_home_path;
+#[cfg(feature = "download")]
+use std::{env, path::PathBuf};
+
 
 #[cfg(feature = "mkl-static-lp64-iomp")]
 const MKL_CONFIG: &str = "mkl-static-lp64-iomp";
