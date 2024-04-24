@@ -22,7 +22,10 @@
 
 use anyhow::Result;
 use intel_mkl_tool::*;
-use ocipkg::{distribution, local, ImageName};
+use ocipkg::{
+    distribution::{get_layer_bytes, MediaType},
+    ImageName,
+};
 use std::{env, fs, path::PathBuf, str::FromStr};
 
 macro_rules! def_mkl_config {
@@ -96,7 +99,6 @@ fn link_package(image_name: &str) -> Result<()> {
     let image_name = ImageName::parse(image_name)?;
 
     let mut dir = PathBuf::from(env::var("OUT_DIR").unwrap());
-    dir.push("ocipkg");
     if let Some(port) = image_name.port {
         dir.push(format!("{}__{}", image_name.hostname, port));
     } else {
@@ -106,7 +108,18 @@ fn link_package(image_name: &str) -> Result<()> {
     dir.push(format!("__{}", image_name.reference));
 
     if !dir.exists() {
-        distribution::get_image(&image_name)?;
+        let blob = get_layer_bytes(&image_name, |media_type| {
+            match media_type {
+                MediaType::ImageLayerGzip => true,
+                // application/vnd.docker.image.rootfs.diff.tar.gzip case
+                MediaType::Other(ty) if ty.ends_with("tar.gzip") => true,
+                _ => false,
+            }
+        })?;
+        let buf = flate2::read::GzDecoder::new(blob.as_slice());
+
+        log::info!("Get {} into {}", image_name, dir.display());
+        tar::Archive::new(buf).unpack(&dir)?;
     }
     println!("cargo:rustc-link-search={}", dir.display());
     for path in fs::read_dir(&dir)?.filter_map(|entry| {
