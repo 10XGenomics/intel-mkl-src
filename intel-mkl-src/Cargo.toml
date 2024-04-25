@@ -31,7 +31,7 @@ mkl-dynamic-ilp64-seq  = []
 
 [build-dependencies]
 anyhow = "1.0.58"
-ocipkg = "0.2.8"
+ocipkg = "0.2.9"
 flate2 = "1.0.28"
 log = "0.4.21"
 tar = "0.4.40"
