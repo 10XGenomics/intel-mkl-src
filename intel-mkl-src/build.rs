@@ -142,6 +142,8 @@ fn link_package(image_name: &str) -> Result<()> {
             }
         }
     }
+    println!("Dir is {}", dir.display());
+    println!("cargo:rustc-env=MKLROOT={}",dir.display() );
     println!("cargo:rerun-if-changed={}", dir.display());
     println!("cargo:rerun-if-env-changed=XDG_DATA_HOME");
     Ok(())
