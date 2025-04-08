@@ -20,12 +20,9 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 // SOFTWARE.
 
-use anyhow::Result;
+use anyhow::{bail, Result};
 use intel_mkl_tool::*;
-use ocipkg::{
-    distribution::{get_layer_bytes, MediaType},
-    ImageName,
-};
+use ocipkg::{distribution::MediaType, image::OciArtifact, ImageName};
 use std::{env, fs, path::PathBuf, str::FromStr};
 
 macro_rules! def_mkl_config {
@@ -108,14 +105,18 @@ fn link_package(image_name: &str) -> Result<()> {
     dir.push(format!("__{}", image_name.reference));
 
     if !dir.exists() {
-        let blob = get_layer_bytes(&image_name, |media_type| {
-            match media_type {
+        let Some((_descriptor, blob)) = OciArtifact::from_remote(image_name.clone())?
+            .get_layers()?
+            .into_iter()
+            .find(|(descriptor, _blob)| match descriptor.media_type() {
                 MediaType::ImageLayerGzip => true,
                 // application/vnd.docker.image.rootfs.diff.tar.gzip case
-                MediaType::Other(ty) if ty.ends_with("tar.gzip") => true,
+                MediaType::Other(x) if x.ends_with("tar.gzip") => true,
                 _ => false,
-            }
-        })?;
+            })
+        else {
+            bail!("Failed to find GZIP layer in {image_name}");
+        };
         let buf = flate2::read::GzDecoder::new(blob.as_slice());
 
         log::info!("Get {} into {}", image_name, dir.display());
