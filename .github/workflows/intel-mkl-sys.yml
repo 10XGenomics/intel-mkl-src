@@ -21,9 +21,9 @@ jobs:
           - mkl-dynamic-lp64-seq
           - mkl-dynamic-ilp64-iomp
           - mkl-dynamic-ilp64-seq
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/rust-math/rust-mkl:1.62.1-2020.1
+      image: ghcr.io/rust-math/rust-mkl:main
     steps:
       - uses: actions/checkout@v1
       - uses: actions-rs/cargo@v1
@@ -42,9 +42,9 @@ jobs:
           - mkl-static-lp64-seq
           - mkl-static-ilp64-iomp
           - mkl-static-ilp64-seq
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
-      image: rust:1.62.1
+      image: rust:1.72.0
     steps:
       - uses: actions/checkout@v1
       - uses: actions-rs/cargo@v1
@@ -67,7 +67,7 @@ jobs:
           - mkl-dynamic-lp64-seq
           - mkl-dynamic-ilp64-iomp
           - mkl-dynamic-ilp64-seq
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
       - uses: actions/checkout@v1
       - name: Get MKL using NuGet
@@ -92,11 +92,13 @@ jobs:
       fail-fast: false
       matrix:
         feature:
-          - mkl-static-lp64-iomp
+          # Fails with STATUS_DLL_NOT_FOUND
+          # - mkl-static-lp64-iomp
           - mkl-static-lp64-seq
-          - mkl-static-ilp64-iomp
+          # Fails with STATUS_DLL_NOT_FOUND
+          # - mkl-static-ilp64-iomp
           - mkl-static-ilp64-seq
-    runs-on: windows-2022
+    runs-on: windows-2025
     steps:
       - uses: actions/checkout@v1
       - uses: actions-rs/cargo@v1

@@ -8,9 +8,9 @@ on:
 
 jobs:
   check-format:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/rust-math/rust-mkl:1.62.1-2020.1
+      image: ghcr.io/rust-math/rust-mkl:main
     steps:
     - uses: actions/checkout@v1
     - uses: actions-rs/cargo@v1
@@ -19,9 +19,9 @@ jobs:
         args: -- --check
 
   clippy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
-      image: ghcr.io/rust-math/rust-mkl:1.62.1-2020.1
+      image: ghcr.io/rust-math/rust-mkl:main
     steps:
     - uses: actions/checkout@v1
     - uses: actions-rs/cargo@v1

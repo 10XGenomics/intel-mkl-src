@@ -3,12 +3,12 @@ name = "intel-mkl-tool"
 version = "0.8.1"
 authors = ["Toshiki Teramura <toshiki.teramura@gmail.com>"]
 edition = "2018"
-rust-version = "1.61.0"
+rust-version = "1.72.0"
 
 description = "Seek Intel(R) MKL library from system"
-repository  = "https://github.com/rust-math/intel-mkl-src"
-keywords    = []
-license     = "MIT"
+repository = "https://github.com/rust-math/intel-mkl-src"
+keywords = []
+license = "MIT"
 
 readme = "../README.md"
 
