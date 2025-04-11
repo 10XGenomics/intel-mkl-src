@@ -2,14 +2,15 @@
 extern crate criterion;
 
 use criterion::Criterion;
-use rand::distributions::{Distribution, Uniform};
+use rand::distr::{Distribution, Uniform};
+use std::convert::TryFrom;
 
 fn criterion_benchmark(c: &mut Criterion) {
     // f32
     for &n in &[100, 1000, 10000] {
         let in_ = {
-            let mut rng = rand::thread_rng();
-            let between = Uniform::from(0.0..2.0 * std::f32::consts::PI);
+            let mut rng = rand::rng();
+            let between = Uniform::try_from(0.0..2.0 * std::f32::consts::PI).unwrap();
             let mut buf = vec![0.0; n];
             for val in buf.iter_mut() {
                 *val = between.sample(&mut rng);
@@ -35,8 +36,8 @@ fn criterion_benchmark(c: &mut Criterion) {
     // f64
     for &n in &[100, 1000, 10000] {
         let in_ = {
-            let mut rng = rand::thread_rng();
-            let between = Uniform::from(0.0..2.0 * std::f64::consts::PI);
+            let mut rng = rand::rng();
+            let between = Uniform::try_from(0.0..2.0 * std::f64::consts::PI).unwrap();
             let mut buf = vec![0.0; n];
             for val in buf.iter_mut() {
                 *val = between.sample(&mut rng);
