@@ -33,9 +33,9 @@ version = "0.8.0"
 default-features = false
 
 [dev-dependencies]
-criterion = "0.3.6"
-rand = "0.8.5"
-approx = "0.5.1"
+criterion = "0.3"
+rand = "0.8"
+approx = "0.5"
 
 [[bench]]
 name = "cos"
