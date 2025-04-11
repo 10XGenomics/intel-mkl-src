@@ -8,7 +8,7 @@ on:
 
 jobs:
   check-format:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
       image: ghcr.io/rust-math/rust-mkl:main
     steps:
@@ -19,7 +19,7 @@ jobs:
         args: -- --check
 
   clippy:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     container:
       image: ghcr.io/rust-math/rust-mkl:main
     steps:
