@@ -26,12 +26,13 @@ include!("mkl.rs");
 mod tests {
     use super::*;
     use approx::ulps_eq;
-    use rand::distributions::{Distribution, Uniform};
+    use rand::distr::{Distribution, Uniform};
+    use std::convert::TryFrom;
     use std::ffi::c_void;
 
     fn gen_rand_array(n: usize) -> Vec<f64> {
-        let mut rng = rand::thread_rng();
-        let between = Uniform::from(0.0..2.0 * std::f64::consts::PI);
+        let mut rng = rand::rng();
+        let between = Uniform::try_from(0.0..2.0 * std::f64::consts::PI).unwrap();
         let mut buf = vec![0.0; n];
         for val in buf.iter_mut() {
             *val = between.sample(&mut rng);

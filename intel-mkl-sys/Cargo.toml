@@ -34,7 +34,7 @@ default-features = false
 
 [dev-dependencies]
 criterion = "0.3"
-rand = "0.8"
+rand = "0.9"
 approx = "0.5"
 
 [[bench]]
