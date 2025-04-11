@@ -20,7 +20,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: actions-rs/toolchain@v1
       with:
-        toolchain: 1.77.0
+        toolchain: 1.72.0
         profile: minimal
         default: true
         override: true
@@ -33,7 +33,7 @@ jobs:
   seek:
     runs-on: ubuntu-22.04
     container:
-      image: ghcr.io/rust-math/rust-mkl:1.62.1-2020.1
+      image: ghcr.io/rust-math/rust-mkl:main
     steps:
     - uses: actions/checkout@v1
     - name: Run seek example
@@ -71,7 +71,7 @@ jobs:
 
     - uses: actions-rs/toolchain@v1
       with:
-        toolchain: 1.77.0
+        toolchain: 1.72.0
         profile: minimal
         default: true
         override: true
