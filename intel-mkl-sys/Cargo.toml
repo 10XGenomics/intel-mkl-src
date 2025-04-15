@@ -33,7 +33,7 @@ version = "0.8.0"
 default-features = false
 
 [dev-dependencies]
-criterion = "0.3"
+criterion = "0.5"
 rand = "0.9"
 approx = "0.5"
 
