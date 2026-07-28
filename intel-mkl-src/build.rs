@@ -143,7 +143,15 @@ fn link_package(image_name: &str) -> Result<()> {
             }
         }
     }
-    println!("cargo:rerun-if-changed={}", dir.display());
+    // NOTE: Do *not* emit `cargo:rerun-if-changed` for `dir` — it lives inside
+    // OUT_DIR and is created/extracted by this build script during the run, so
+    // its mtime ends up newer than the build-script fingerprint. That makes the
+    // build script permanently dirty, forcing a spurious re-run on the next
+    // build, which recompiles this crate and cascades to every downstream MKL
+    // consumer (blas-src and beyond) plus a re-link of the ~600 MB static lib.
+    // The download is keyed by the OCI image reference and guarded by
+    // `!dir.exists()`, so nothing here needs to be watched. See rust-lang/cargo
+    // #2261 and #7362 for the OUT_DIR rerun-if-changed footgun.
     println!("cargo:rerun-if-env-changed=XDG_DATA_HOME");
     Ok(())
 }
